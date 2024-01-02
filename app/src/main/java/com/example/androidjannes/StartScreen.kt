@@ -36,7 +36,8 @@ import androidx.compose.material3.TopAppBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(
-    navController: NavController
+    navController: NavController,
+    sharedViewModel: SharedViewModel
 ){
     val startViewModel = viewModel<StartScreenViewModel>()
 
@@ -51,7 +52,7 @@ fun StartScreen(
             ) {
                 when(val seasonState = startViewModel.seasons){
                     is NbaSeasonsState.Success -> {
-                        Seasons(seasons = seasonState.seasons, navController = navController)
+                        Seasons(seasons = seasonState.seasons, sharedViewModel = sharedViewModel, navController = navController )
                     }
                     NbaSeasonsState.Loading -> {
                         Text(text = "Loading...")
@@ -91,22 +92,30 @@ fun AppHeader(
 fun Seasons(
     modifier: Modifier = Modifier,
     seasons : List<Int>,
+    sharedViewModel: SharedViewModel,
     navController: NavController
 ){
     LazyColumn(modifier = modifier
         .fillMaxSize())
     {
-        items(seasons) {year ->
-            Text(text = year.toString(),
-                modifier = Modifier.clickable { onItemClick(navController) })
+        items(seasons) {itemYear ->
+            Text(text = itemYear.toString(),
+                modifier = Modifier.clickable {
+                    onItemClick(navController, sharedViewModel, itemYear)
+                }
+            )
         }
     }
 }
 
 fun onItemClick(
-    navController: NavController
+    navController : NavController,
+    sharedViewModel : SharedViewModel,
+    year : Int
 ){
+    sharedViewModel.setSelectedYear(year)
     navController.navigate(Screen.Info.route)
+
 }
 
 @Composable

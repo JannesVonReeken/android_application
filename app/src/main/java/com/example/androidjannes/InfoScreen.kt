@@ -14,7 +14,8 @@ import androidx.navigation.NavController
 
 @Composable
 fun InfoScreen(
-    navController: NavController
+    navController: NavController,
+    sharedViewModel: SharedViewModel
 ){
     val infoViewModel = viewModel<InfoScreenViewModel>()
 
@@ -34,7 +35,7 @@ fun InfoScreen(
                     }
                     infoViewModel.onClickChange()
                 },
-                text = stringResource(R.string.text2_name) )
+                text = sharedViewModel.selectedYear.value.toString())
         }
     }
 }
