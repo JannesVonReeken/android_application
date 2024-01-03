@@ -4,4 +4,8 @@
     <string name="text1_name">Next</string>
     <string name="text2_name">Back</string>
     <string name="Title">NBA</string>
+    <string name="EastConference">Eastern Conference</string>
+    <string name="WestConference">Western Conference</string>
+    <string name="NoTeamsFound">No teams found for this season</string>
+
 </resources>

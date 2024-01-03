@@ -28,7 +28,7 @@ data class StandingData(
     val gamesBehind: String,
     val streak: Int,
     val winStreak: Boolean,
-    val tieBreakerPoints: Any? // Du kannst den genauen Typ festlegen, wenn es bekannt ist
+    val tieBreakerPoints: Any?
 )
 
 data class TeamData(

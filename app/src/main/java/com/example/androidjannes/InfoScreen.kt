@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.androidjannes.network.StandingData
@@ -33,7 +35,6 @@ fun InfoScreen(
                 when (val standingsState = infoScreenViewModel.standings) {
                     is NbaStandingsState.Success -> {
                         Standings(standings = standingsState.standings )
-                        //Test(infoScreenViewModel = infoScreenViewModel)
                     }
 
                     NbaStandingsState.Loading -> {
@@ -60,22 +61,37 @@ fun Standings(
     modifier: Modifier = Modifier,
     standings : List<StandingData>,
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-    )
-    {
-        items(standings) { itemYear ->
-            Text(
-                text = itemYear.team.name,
-            )
+    val eastConference = standings.filter { it.conference.name.equals("East", ignoreCase = true) }
+    val westConference = standings.filter { it.conference.name.equals("West", ignoreCase = true) }
+
+    Column(modifier = modifier.fillMaxSize()) {
+        if(eastConference.isNotEmpty()){
+            Text(stringResource(R.string.EastConference))
+            LazyColumn(modifier = modifier
+                .weight(1f)
+            ){
+                items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+                    Text(
+                        text = item.team.name,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        }
+        if (westConference.isNotEmpty()){
+            Text(stringResource(R.string.WestConference))
+            LazyColumn(modifier = modifier
+                .weight(1f)){
+                items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })){ item ->
+                    Text(
+                        text = item.team.name,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        }
+        else{
+            Text(stringResource(R.string.NoTeamsFound))
         }
     }
-}
-
-@Composable
-fun Test(
-    infoScreenViewModel: InfoScreenViewModel
-){
-    Text(text = infoScreenViewModel.selectedYear.value.toString())
 }
