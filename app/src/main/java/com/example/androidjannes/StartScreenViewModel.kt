@@ -13,7 +13,6 @@ sealed interface NbaSeasonsState{
     data class Success(val seasons : List<Int>) : NbaSeasonsState
     object Loading : NbaSeasonsState
     object Error : NbaSeasonsState
-
 }
 class StartScreenViewModel : ViewModel() {
 

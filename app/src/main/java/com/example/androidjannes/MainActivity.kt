@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedViewModel: SharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+
         setContent {
             AndroidJannesTheme {
                 // A surface container using the 'background' color from the theme

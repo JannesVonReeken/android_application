@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 @Composable
 fun SetupNavGraph(
     navController : NavHostController,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
 )
 {
     NavHost(
@@ -20,7 +20,7 @@ fun SetupNavGraph(
         }
 
         composable(route = Screen.Info.route){
-            InfoScreen(navController = navController, sharedViewModel = sharedViewModel )
+            InfoScreen(navController = navController)
         }
     }
 }

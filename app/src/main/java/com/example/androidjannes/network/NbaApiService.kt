@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 private const val BASE_URL = "https://api-nba-v1.p.rapidapi.com"
 private const val API_KEY = "8d607be43dmsh910c31a4dcf6bf0p12017ejsnb0b834ab0475"
@@ -28,7 +29,13 @@ private val retrofit = Retrofit.Builder()
 
 interface NbaApiService{
     @GET("seasons")
-    suspend fun getSeasons() : NbaResponse
+    suspend fun getSeasons() : NbaSeasonsResponse
+
+    @GET("standings")
+    suspend fun getStandings(
+        @Query("season") season : Int = 2021,
+        @Query("league") league : String = "standard"
+    ) : NbaStandingResponse
 }
 
 object NbaApi{

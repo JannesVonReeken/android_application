@@ -60,6 +60,8 @@ fun StartScreen(
                     NbaSeasonsState.Error -> {
                         Text(text = "Error loading seasons")
                     }
+
+                    else -> {}
                 }
             }
 
