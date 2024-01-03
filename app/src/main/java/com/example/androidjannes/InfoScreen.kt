@@ -1,7 +1,5 @@
 package com.example.androidjannes
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,9 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.androidjannes.network.StandingData
@@ -22,8 +18,8 @@ import com.example.androidjannes.network.StandingData
 @Composable
 fun InfoScreen(
     navController: NavController,
+    infoScreenViewModel: InfoScreenViewModel
 ) {
-    val infoViewModel = viewModel<InfoScreenViewModel>()
 
     Scaffold(
         topBar = {
@@ -34,9 +30,10 @@ fun InfoScreen(
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                when (val standingsState = infoViewModel.standings) {
+                when (val standingsState = infoScreenViewModel.standings) {
                     is NbaStandingsState.Success -> {
                         Standings(standings = standingsState.standings )
+                        //Test(infoScreenViewModel = infoScreenViewModel)
                     }
 
                     NbaStandingsState.Loading -> {
@@ -74,4 +71,11 @@ fun Standings(
             )
         }
     }
+}
+
+@Composable
+fun Test(
+    infoScreenViewModel: InfoScreenViewModel
+){
+    Text(text = infoScreenViewModel.selectedYear.value.toString())
 }

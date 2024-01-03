@@ -1,6 +1,6 @@
 package com.example.androidjannes.network
 
-import com.example.androidjannes.NbaSeasonsState
+import androidx.compose.runtime.State
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,8 +33,8 @@ interface NbaApiService{
 
     @GET("standings")
     suspend fun getStandings(
-        @Query("season") season : Int = 2021,
-        @Query("league") league : String = "standard"
+        @Query("season") season: Int,
+        @Query("league") league: String = "standard"
     ) : NbaStandingResponse
 }
 

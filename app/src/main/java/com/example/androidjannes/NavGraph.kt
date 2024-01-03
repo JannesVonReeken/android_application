@@ -8,7 +8,9 @@ import androidx.navigation.compose.composable
 @Composable
 fun SetupNavGraph(
     navController : NavHostController,
-    sharedViewModel: SharedViewModel,
+    startScreenViewModel: StartScreenViewModel,
+    infoScreenViewModel: InfoScreenViewModel,
+   // sharedViewModel: SharedViewModel
 )
 {
     NavHost(
@@ -16,11 +18,11 @@ fun SetupNavGraph(
         startDestination = Screen.Start.route)
     {
         composable(route = Screen.Start.route){
-            StartScreen(navController = navController, sharedViewModel = sharedViewModel)
+            StartScreen(navController = navController, startScreenViewModel = startScreenViewModel, infoScreenViewModel = infoScreenViewModel)
         }
 
         composable(route = Screen.Info.route){
-            InfoScreen(navController = navController)
+            InfoScreen(navController = navController, infoScreenViewModel = infoScreenViewModel)
         }
     }
 }

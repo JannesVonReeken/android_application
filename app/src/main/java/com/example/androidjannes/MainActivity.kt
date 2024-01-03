@@ -3,6 +3,7 @@ package com.example.androidjannes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,12 +17,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.androidjannes.ui.theme.AndroidJannesTheme
 
+
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
+    private val startScreenViewModel : StartScreenViewModel by viewModels()
+    private val infoScreenViewModel : InfoScreenViewModel by viewModels()
+    //private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedViewModel: SharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
 
         setContent {
             AndroidJannesTheme {
@@ -31,7 +35,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     navController = rememberNavController()
-                    SetupNavGraph(navController = navController, sharedViewModel)
+                    SetupNavGraph(
+                        navController = navController,
+                        startScreenViewModel = startScreenViewModel,
+                        infoScreenViewModel = infoScreenViewModel,
+                        //sharedViewModel = sharedViewModel
+                    )
                 }
             }
         }

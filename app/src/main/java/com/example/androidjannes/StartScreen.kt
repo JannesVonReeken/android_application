@@ -1,5 +1,6 @@
 package com.example.androidjannes
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -37,10 +38,9 @@ import androidx.compose.material3.TopAppBar
 @Composable
 fun StartScreen(
     navController: NavController,
-    sharedViewModel: SharedViewModel
+    startScreenViewModel: StartScreenViewModel,
+    infoScreenViewModel: InfoScreenViewModel
 ){
-    val startViewModel = viewModel<StartScreenViewModel>()
-
     Scaffold(
         topBar = {
             AppHeader()
@@ -50,9 +50,13 @@ fun StartScreen(
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                when(val seasonState = startViewModel.seasons){
+                when(val seasonState = startScreenViewModel.seasons){
                     is NbaSeasonsState.Success -> {
-                        Seasons(seasons = seasonState.seasons, sharedViewModel = sharedViewModel, navController = navController )
+                        Seasons(
+                            seasons = seasonState.seasons,
+                            infoScreenViewModel = infoScreenViewModel ,
+                            navController = navController
+                        )
                     }
                     NbaSeasonsState.Loading -> {
                         Text(text = "Loading...")
@@ -94,8 +98,8 @@ fun AppHeader(
 fun Seasons(
     modifier: Modifier = Modifier,
     seasons : List<Int>,
-    sharedViewModel: SharedViewModel,
-    navController: NavController
+    infoScreenViewModel: InfoScreenViewModel,
+    navController: NavController,
 ){
     LazyColumn(modifier = modifier
         .fillMaxSize())
@@ -103,7 +107,7 @@ fun Seasons(
         items(seasons) {itemYear ->
             Text(text = itemYear.toString(),
                 modifier = Modifier.clickable {
-                    onItemClick(navController, sharedViewModel, itemYear)
+                    onItemClick(navController, infoScreenViewModel, itemYear)
                 }
             )
         }
@@ -112,12 +116,12 @@ fun Seasons(
 
 fun onItemClick(
     navController : NavController,
-    sharedViewModel : SharedViewModel,
+    infoScreenViewModel: InfoScreenViewModel,
     year : Int
 ){
-    sharedViewModel.setSelectedYear(year)
+    infoScreenViewModel.setSelectedYear(year)
     navController.navigate(Screen.Info.route)
-
+    //Log.d("ItemClicked", "SelectedYear: ${infoScreenViewModel.selectedYear}")
 }
 
 @Composable
