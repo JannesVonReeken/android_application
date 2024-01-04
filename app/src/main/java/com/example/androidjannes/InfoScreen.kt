@@ -22,6 +22,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -77,7 +78,9 @@ fun Standings(
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
             Column(modifier = modifier.fillMaxSize()) {
-                Text(stringResource(R.string.EastConference))
+                Spacer(modifier = Modifier.padding(8.dp))
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){Text(stringResource(R.string.EastConference))}
+                Spacer(modifier = Modifier.padding(8.dp))
                 LazyColumn(modifier = modifier
                     .weight(1f),
                     state = infoScreenViewModel.eastConferenceScrollState
@@ -86,8 +89,10 @@ fun Standings(
                         TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item)
                     }
                 }
-                Spacer(modifier = Modifier.padding(36.dp))
-                Text(stringResource(R.string.WestConference))
+                Spacer(modifier = Modifier.padding(8.dp))
+                Box(modifier = Modifier.fillMaxWidth(),contentAlignment = Alignment.Center ){
+                Text(stringResource(R.string.WestConference))}
+                Spacer(modifier = Modifier.padding(8.dp))
                 LazyColumn(modifier = modifier
                     .weight(1f),
                     state = infoScreenViewModel.westConferenceScrollState){
@@ -164,8 +169,11 @@ fun TeamCard(
                 .fillMaxWidth()
             ) 
             { 
-                Text(text = nbaTeam.team.name)
-                Text(infoScreenViewModel.calculateDisplayValues(nbaTeam)) 
+                Text(
+                    text = nbaTeam.team.name,
+                    color = Color.White
+                )
+                Text(infoScreenViewModel.calculateDisplayValues(nbaTeam), color = Color.White)
                 AsyncImage(
                     model = nbaTeam.team.logo,
                     contentDescription = "Lol",

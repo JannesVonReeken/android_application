@@ -14,7 +14,7 @@ sealed interface NbaSeasonsState{
     object Loading : NbaSeasonsState
     object Error : NbaSeasonsState
 }
-class StartScreenViewModel : ViewModel() {
+class StartScreenViewModel(private val seasonDao: SeasonsDao): ViewModel() {
 
     var seasons : NbaSeasonsState by mutableStateOf(NbaSeasonsState.Loading)
         private set
@@ -25,8 +25,15 @@ class StartScreenViewModel : ViewModel() {
     private fun getSeasons(){
         viewModelScope.launch {
             seasons = try {
-                val seasonsResponse = NbaApi.retrofitService.getSeasons()
-                NbaSeasonsState.Success(seasonsResponse.response)
+                val localSeasons = seasonDao.getSeasons()
+                if(localSeasons == null){
+                    val seasonsResponse = NbaApi.retrofitService.getSeasons()
+                    val remoteSeasons = seasonsResponse.response
+                    seasonDao.insertSeasons(Seasons(remoteSeasons))
+                    NbaSeasonsState.Success(seasonsResponse.response)
+                }else{
+                    NbaSeasonsState.Success(localSeasons.seasons)
+                }
             } catch (e: IOException){
                 NbaSeasonsState.Error
             }

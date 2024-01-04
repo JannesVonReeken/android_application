@@ -23,6 +23,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -74,9 +75,9 @@ fun StartScreen(
             }
 
         },
-        bottomBar = {
-            NavigationBar()
-        }
+        //bottomBar = {
+        //    NavigationBar()
+        //}
     )
 }
 
@@ -87,13 +88,14 @@ fun AppHeader(
     Box(
         modifier
             .height(56.dp)
-            .background(Color.Green)
+            .background(Color.Blue)
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ){
         Text(
             text = stringResource(R.string.Title),
             textAlign = TextAlign.Center,
+            color = Color.White
         )
     }
 }
@@ -111,10 +113,10 @@ fun Seasons(
     {
         items(seasons) {itemYear ->
             ListItem(
-                headlineText = { Text(text = itemYear.toString()) },
+                headlineText = {
+                    Text( text = itemYear.toString()) },
                 modifier = Modifier
                     .clickable { onItemClick(navController, infoScreenViewModel, itemYear) },
-
             )
             Divider(modifier = Modifier
                 .padding(16.dp))

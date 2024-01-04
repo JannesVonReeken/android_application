@@ -15,18 +15,26 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.example.androidjannes.ui.theme.AndroidJannesTheme
 
 
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
-    private val startScreenViewModel : StartScreenViewModel by viewModels()
+    private lateinit var seasonsDao: SeasonsDao
+    private val startScreenViewModel : StartScreenViewModel by viewModels(){
+        StartScreenViewModelFactory(seasonsDao = seasonsDao) }
     private val infoScreenViewModel : InfoScreenViewModel by viewModels()
     //private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val seasonsDatabase = Room.databaseBuilder(
+            applicationContext,
+            SeasonsDatabase::class.java, "seasons_database"
+        ).build()
 
+        seasonsDao = seasonsDatabase.dao
         setContent {
             AndroidJannesTheme {
                 // A surface container using the 'background' color from the theme
