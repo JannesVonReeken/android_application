@@ -1,5 +1,6 @@
 package com.example.androidjannes
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,12 @@ class InfoScreenViewModel() : ViewModel() {
     var standings: NbaStandingsState by mutableStateOf(NbaStandingsState.Loading)
         private set
 
+    var eastConferenceScrollState: LazyListState = LazyListState()
+        private set
+
+    var westConferenceScrollState: LazyListState = LazyListState()
+        private set
+
     private val _selectedYear = mutableStateOf(0)
     val selectedYear: State<Int> get() = _selectedYear
 
@@ -38,5 +45,9 @@ class InfoScreenViewModel() : ViewModel() {
                 NbaStandingsState.Error
             }
         }
+    }
+
+    fun calculateDisplayValues(standingData: StandingData): String {
+        return "W: ${standingData.win.total} L: ${standingData.loss.total} Rank: ${standingData.conference.rank}"
     }
 }
