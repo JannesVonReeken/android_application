@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -89,11 +90,13 @@ fun AppHeader( //Header for the App
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ){
-        Text(
-            text = stringResource(R.string.Title),
-            textAlign = TextAlign.Center,
-            color = Color.White
-        )
+        Row {
+            Text(
+                text = stringResource(R.string.Title),
+                textAlign = TextAlign.Center,
+                color = Color.White
+            )
+        }
     }
 }
 
@@ -128,34 +131,4 @@ fun onItemClick( //When a season is selected, the navController navigates to the
 ){
     infoScreenViewModel.setSelectedYear(season)
     navController.navigate(Screen.Info.route)
-}
-
-@Composable
-fun NavigationBar(
-    modifier: Modifier = Modifier
-){
-    NavigationBar(
-        modifier = modifier
-    ){
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null
-                )
-            },
-            selected = true,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Build,
-                    contentDescription = null
-                )
-            },
-            selected = true,
-            onClick = {}
-        )
-    }
 }

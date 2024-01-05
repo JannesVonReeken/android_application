@@ -23,8 +23,9 @@ class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
     private lateinit var seasonsDao: SeasonsDao
+    private lateinit var seasonsRepository: SeasonsRepository
     private val startScreenViewModel : StartScreenViewModel by viewModels(){
-        StartScreenViewModelFactory(seasonsDao = seasonsDao) }
+        StartScreenViewModelFactory(seasonsRepository = seasonsRepository) }
     private val infoScreenViewModel : InfoScreenViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         seasonsDao = seasonsDatabase.dao
+        seasonsRepository = SeasonsRepository(seasonsDao)
         setContent {
             AndroidJannesTheme {
                 Surface(

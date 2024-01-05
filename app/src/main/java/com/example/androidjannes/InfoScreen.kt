@@ -15,10 +15,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,18 +57,26 @@ fun InfoScreen(
                     is NbaStandingsState.Success -> { //On Success it loads the standings composable
                         Standings(infoScreenViewModel = infoScreenViewModel, standings = standingsState.standings )
                     }
-
                     NbaStandingsState.Loading -> { //On loading
+                    Box(modifier = Modifier
+                        .fillMaxSize(),
+                        contentAlignment = Alignment.Center){
                         Text(text = "Loading...")
+                    }
                     }
 
                     NbaStandingsState.Error -> { //If something didn't worked
-                        Text(text = "Error loading seasons")
+                        Box(modifier = Modifier
+                            .fillMaxSize(),
+                            contentAlignment = Alignment.Center){
+                            Text(text = "No season data available...")
+                        }
                     }
                 }
             }
 
         },
+        bottomBar = {NavigationBar(navController = navController)}
     )
 }
 
@@ -77,29 +91,42 @@ fun Standings(
     val configuration = LocalConfiguration.current
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> { //Portrait view
-            Column(modifier = modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.padding(8.dp))
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){Text(stringResource(R.string.EastConference))}
-                Spacer(modifier = Modifier.padding(8.dp))
-                LazyColumn(modifier = modifier
-                    .weight(1f),
-                    state = infoScreenViewModel.eastConferenceScrollState
-                ){
-                    items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
+                Column(modifier = modifier.fillMaxSize()) {
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) { Text(stringResource(R.string.EastConference)) }
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    LazyColumn(
+                        modifier = modifier
+                            .weight(1f),
+                        state = infoScreenViewModel.eastConferenceScrollState
+                    ) {
+                        items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+                            TeamCard(
+                                infoScreenViewModel = infoScreenViewModel,
+                                nbaTeam = item
+                            ) //Adds eastern conference teams & sorts them by total wins and losses
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.padding(8.dp))
-                Box(modifier = Modifier.fillMaxWidth(),contentAlignment = Alignment.Center ){
-                Text(stringResource(R.string.WestConference))}
-                Spacer(modifier = Modifier.padding(8.dp))
-                LazyColumn(modifier = modifier
-                    .weight(1f),
-                    state = infoScreenViewModel.westConferenceScrollState){
-                    items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })){ item ->
-                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds western conference teams & sorts them by total wins and losses
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Text(stringResource(R.string.WestConference))
                     }
-                }
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    LazyColumn(
+                        modifier = modifier
+                            .weight(1f),
+                        state = infoScreenViewModel.westConferenceScrollState
+                    ) {
+                        items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+                            TeamCard(
+                                infoScreenViewModel = infoScreenViewModel,
+                                nbaTeam = item
+                            ) //Adds western conference teams & sorts them by total wins and losses
+                        }
+                    }
             }
         }
     }
@@ -177,6 +204,29 @@ fun TeamCard(
                     modifier = Modifier
                         .size(75.dp, 75.dp))
             }
+    }
+}
+
+@Composable
+fun NavigationBar( //Navigationbar to navigate back to the seasons list
+    modifier: Modifier = Modifier,
+    navController: NavController
+){
+    androidx.compose.material3.NavigationBar(
+        modifier = modifier
+    ) {
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null
+                )
+            },
+            selected = true,
+            onClick = {
+                navController.navigate(Screen.Start.route)
+            }
+        )
     }
 }
 
