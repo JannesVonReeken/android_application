@@ -11,8 +11,8 @@ import androidx.room.Upsert
 @Dao
 interface SeasonsDao {
     @Query("SELECT * FROM nbaSeasons LIMIT 1")
-    suspend fun getSeasons(): Seasons?
+    suspend fun getSeasons(): Seasons? //Gets the from the seasons entity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSeasons(seasons: Seasons)
+    suspend fun insertSeasons(seasons: Seasons) //Insets seasons entity - helps to update the database
 }

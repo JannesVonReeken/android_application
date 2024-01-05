@@ -10,7 +10,7 @@ import retrofit2.http.Query
 private const val BASE_URL = "https://api-nba-v1.p.rapidapi.com"
 private const val API_KEY = "8d607be43dmsh910c31a4dcf6bf0p12017ejsnb0b834ab0475"
 
-private val retrofit = Retrofit.Builder()
+private val retrofit = Retrofit.Builder() //Creating Retrofit Object for the NBA API
     .addConverterFactory(GsonConverterFactory.create())
     .baseUrl(BASE_URL)
     .client(
@@ -27,14 +27,14 @@ private val retrofit = Retrofit.Builder()
     )
     .build()
 
-interface NbaApiService{
+interface NbaApiService{ //API Requests
     @GET("seasons")
-    suspend fun getSeasons() : NbaSeasonsResponse
+    suspend fun getSeasons() : NbaSeasonsResponse //Gets a list of Nba seasons from the Api
 
     @GET("standings")
-    suspend fun getStandings(
+    suspend fun getStandings( //NBA Standings & Data for the Teams
         @Query("season") season: Int,
-        @Query("league") league: String = "standard"
+        @Query("league") league: String = "standard" //League is "standard" which means the NBA
     ) : NbaStandingResponse
 }
 

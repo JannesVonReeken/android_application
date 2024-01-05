@@ -9,6 +9,6 @@ import androidx.room.TypeConverters
     version = 1
 )
 @TypeConverters(Converters::class)
-abstract class SeasonsDatabase : RoomDatabase() {
+abstract class SeasonsDatabase : RoomDatabase() { //Room database
     abstract val dao: SeasonsDao
 }

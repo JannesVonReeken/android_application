@@ -43,10 +43,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(
+fun StartScreen( //Starting screen of the app
     navController: NavController,
     startScreenViewModel: StartScreenViewModel,
-    infoScreenViewModel: InfoScreenViewModel
+    infoScreenViewModel: InfoScreenViewModel //Needed to set the selected season to the new value
 ){
     Scaffold(
         topBar = {
@@ -57,32 +57,29 @@ fun StartScreen(
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                when(val seasonState = startScreenViewModel.seasons){
-                    is NbaSeasonsState.Success -> {
+                when(val seasonState = startScreenViewModel.seasons){ //Checks the status of the API call
+                    is NbaSeasonsState.Success -> { //Data is available - Success
                         Seasons(
                             seasons = seasonState.seasons,
                             infoScreenViewModel = infoScreenViewModel ,
                             navController = navController
                         )
                     }
-                    NbaSeasonsState.Loading -> {
+                    NbaSeasonsState.Loading -> { //Loading
                         Text(text = "Loading...")
                     }
-                    NbaSeasonsState.Error -> {
+                    NbaSeasonsState.Error -> { //No data found or not available
                         Text(text = "Error loading seasons")
                     }
                 }
             }
 
         },
-        //bottomBar = {
-        //    NavigationBar()
-        //}
     )
 }
 
 @Composable
-fun AppHeader(
+fun AppHeader( //Header for the App
     modifier: Modifier = Modifier
 ){
     Box(
@@ -102,7 +99,7 @@ fun AppHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Seasons(
+fun Seasons( //Shows the seasons from the API call from the startviewmodel
     modifier: Modifier = Modifier,
     seasons : List<Int>,
     infoScreenViewModel: InfoScreenViewModel,
@@ -111,12 +108,12 @@ fun Seasons(
     LazyColumn(modifier = modifier
         .fillMaxSize())
     {
-        items(seasons) {itemYear ->
+        items(seasons) {itemSeason -> //Every item stands for a season, listed on the screen
             ListItem(
                 headlineText = {
-                    Text( text = itemYear.toString()) },
+                    Text( text = itemSeason.toString()) },
                 modifier = Modifier
-                    .clickable { onItemClick(navController, infoScreenViewModel, itemYear) },
+                    .clickable { onItemClick(navController, infoScreenViewModel, itemSeason) },
             )
             Divider(modifier = Modifier
                 .padding(16.dp))
@@ -124,14 +121,13 @@ fun Seasons(
     }
 }
 
-fun onItemClick(
+fun onItemClick( //When a season is selected, the navController navigates to the Information screen & the infoscreenviewmodel sets to the selected season
     navController : NavController,
     infoScreenViewModel: InfoScreenViewModel,
-    year : Int
+    season : Int
 ){
-    infoScreenViewModel.setSelectedYear(year)
+    infoScreenViewModel.setSelectedYear(season)
     navController.navigate(Screen.Info.route)
-    //Log.d("ItemClicked", "SelectedYear: ${infoScreenViewModel.selectedYear}")
 }
 
 @Composable
