@@ -12,42 +12,42 @@ import com.example.androidjannes.network.StandingData
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-sealed interface NbaStandingsState{
+sealed interface NbaStandingsState{ //Error, Loading & Success states for the loading
     data class Success(val standings : List<StandingData>) : NbaStandingsState
     object Loading : NbaStandingsState
     object Error : NbaStandingsState
 }
 class InfoScreenViewModel() : ViewModel() {
     var standings: NbaStandingsState by mutableStateOf(NbaStandingsState.Loading)
-        private set
+        private set //Real NBA standing state
 
     var eastConferenceScrollState: LazyListState = LazyListState()
-        private set
+        private set //Saves the scroll state for the conference
 
     var westConferenceScrollState: LazyListState = LazyListState()
-        private set
+        private set //Saves the scroll state for the conference
 
-    private val _selectedYear = mutableStateOf(0)
-    val selectedYear: State<Int> get() = _selectedYear
+    private val _selectedSeason = mutableStateOf(0)
+    val selectedSeason: State<Int> get() = _selectedSeason //gets the "_selectedSeason"
 
-    fun setSelectedYear(year : Int){
-        _selectedYear.value = year
+    fun setSelectedYear(season : Int){ //sets the "_selectedSeason" to the Season which was picked on the Startscreen
+        _selectedSeason.value = season
         getStandings()
     }
 
-    private fun getStandings(){
-        val currentSelectedYear = selectedYear.value
+    private fun getStandings(){ //Makes the API call to get the current standings, depending on the chooses season
+        val currentSelectedSeason = selectedSeason.value
         viewModelScope.launch {
             standings = try {
-                val standingResponse = NbaApi.retrofitService.getStandings(season = currentSelectedYear)
-                NbaStandingsState.Success(standingResponse.response)
+                val standingResponse = NbaApi.retrofitService.getStandings(season = currentSelectedSeason)
+                NbaStandingsState.Success(standingResponse.response) //State changes to success
             } catch (e: IOException){
-                NbaStandingsState.Error
+                NbaStandingsState.Error //State changes to error
             }
         }
     }
 
-    fun calculateDisplayValues(standingData: StandingData): String {
+    fun calculateDisplayValues(standingData: StandingData): String { //Gets the different values for the teamcards
         return "W: ${standingData.win.total} L: ${standingData.loss.total} Rank: ${standingData.conference.rank}"
     }
 }

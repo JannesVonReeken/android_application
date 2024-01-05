@@ -47,16 +47,16 @@ fun InfoScreen(
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                when (val standingsState = infoScreenViewModel.standings) {
-                    is NbaStandingsState.Success -> {
+                when (val standingsState = infoScreenViewModel.standings) { //Standingsstate from the infoscreenViewmodel
+                    is NbaStandingsState.Success -> { //On Success it loads the standings composable
                         Standings(infoScreenViewModel = infoScreenViewModel, standings = standingsState.standings )
                     }
 
-                    NbaStandingsState.Loading -> {
+                    NbaStandingsState.Loading -> { //On loading
                         Text(text = "Loading...")
                     }
 
-                    NbaStandingsState.Error -> {
+                    NbaStandingsState.Error -> { //If something didn't worked
                         Text(text = "Error loading seasons")
                     }
                 }
@@ -72,11 +72,11 @@ fun Standings(
     modifier: Modifier = Modifier,
     standings : List<StandingData>,
 ) {
-    val eastConference = standings.filter { it.conference.name.equals("East", ignoreCase = true) }
+    val eastConference = standings.filter { it.conference.name.equals("East", ignoreCase = true) } //Splits the teams in eastern & western conference, depending on the standing
     val westConference = standings.filter { it.conference.name.equals("West", ignoreCase = true) }
     val configuration = LocalConfiguration.current
     when (configuration.orientation) {
-        Configuration.ORIENTATION_PORTRAIT -> {
+        Configuration.ORIENTATION_PORTRAIT -> { //Portrait view
             Column(modifier = modifier.fillMaxSize()) {
                 Spacer(modifier = Modifier.padding(8.dp))
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){Text(stringResource(R.string.EastConference))}
@@ -86,7 +86,7 @@ fun Standings(
                     state = infoScreenViewModel.eastConferenceScrollState
                 ){
                     items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item)
+                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
                     }
                 }
                 Spacer(modifier = Modifier.padding(8.dp))
@@ -97,16 +97,15 @@ fun Standings(
                     .weight(1f),
                     state = infoScreenViewModel.westConferenceScrollState){
                     items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })){ item ->
-                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item)
+                        TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds western conference teams & sorts them by total wins and losses
                     }
                 }
             }
         }
     }
     when(configuration.orientation){
-        Configuration.ORIENTATION_LANDSCAPE -> {
+        Configuration.ORIENTATION_LANDSCAPE -> { //Landscape view
             Row(modifier = modifier.fillMaxSize()) {
-                // Linke Hälfte
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -118,12 +117,10 @@ fun Standings(
                         state = infoScreenViewModel.eastConferenceScrollState
                     ) {
                         items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item)
+                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
                         }
                     }
                 }
-
-                // Rechte Hälfte
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -135,7 +132,7 @@ fun Standings(
                         state = infoScreenViewModel.westConferenceScrollState
                     ) {
                         items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item)
+                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
                         }
                     }
                 }
@@ -148,13 +145,13 @@ fun TeamCard(
     nbaTeam : StandingData,
     infoScreenViewModel: InfoScreenViewModel)
 {
-    val backgroundColor = if (nbaTeam.conference.name.equals("East", ignoreCase = true)) {
+    val backgroundColor = if (nbaTeam.conference.name.equals("East", ignoreCase = true)) { //Changes color of the card, depending on the conference (red is normaly the western & blue the eastern conference)
         Color(red = 1, green = 87, blue = 155)
     } else {
         Color.Red
     }
 
-    Card(
+    Card( //Design of the Card
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 24.dp, end = 24.dp, top = 5.dp, bottom = 5.dp),
@@ -174,9 +171,9 @@ fun TeamCard(
                     color = Color.White
                 )
                 Text(infoScreenViewModel.calculateDisplayValues(nbaTeam), color = Color.White)
-                AsyncImage(
+                AsyncImage( //Load the team logos
                     model = nbaTeam.team.logo,
-                    contentDescription = "Lol",
+                    contentDescription = "${nbaTeam.team.name} logo",
                     modifier = Modifier
                         .size(75.dp, 75.dp))
             }

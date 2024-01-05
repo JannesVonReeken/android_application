@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
     private val startScreenViewModel : StartScreenViewModel by viewModels(){
         StartScreenViewModelFactory(seasonsDao = seasonsDao) }
     private val infoScreenViewModel : InfoScreenViewModel by viewModels()
-    //private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val seasonsDatabase = Room.databaseBuilder(
@@ -37,7 +36,6 @@ class MainActivity : ComponentActivity() {
         seasonsDao = seasonsDatabase.dao
         setContent {
             AndroidJannesTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -47,7 +45,6 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startScreenViewModel = startScreenViewModel,
                         infoScreenViewModel = infoScreenViewModel,
-                        //sharedViewModel = sharedViewModel
                     )
                 }
             }

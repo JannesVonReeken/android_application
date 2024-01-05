@@ -1,7 +1,7 @@
 package com.example.androidjannes.network
 
 
-//Response Structures from the NBA API
+//Response structures from the NBA API
 data class NbaSeasonsResponse(
     val response: List<Int>
 )
