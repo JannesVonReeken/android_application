@@ -1,8 +1,7 @@
-package com.example.androidjannes
+package com.example.androidjannes.repositorys
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import com.example.androidjannes.room.Seasons
+import com.example.androidjannes.room.SeasonsDao
 
 class SeasonsRepository(private val seasonsDao: SeasonsDao) { //Repository to separate the different layers from eachother
 

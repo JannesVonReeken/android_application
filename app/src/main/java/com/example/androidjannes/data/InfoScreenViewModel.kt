@@ -1,4 +1,4 @@
-package com.example.androidjannes
+package com.example.androidjannes.data
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.State

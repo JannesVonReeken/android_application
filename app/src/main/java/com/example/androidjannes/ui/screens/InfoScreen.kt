@@ -1,7 +1,6 @@
-package com.example.androidjannes
+package com.example.androidjannes.ui.screens
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,16 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.androidjannes.data.InfoScreenViewModel
+import com.example.androidjannes.data.NbaStandingsState
+import com.example.androidjannes.R
+import com.example.androidjannes.navigation.Screen
 import com.example.androidjannes.network.StandingData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +75,7 @@ fun InfoScreen(
             }
 
         },
-        bottomBar = {NavigationBar(navController = navController)}
+        bottomBar = { NavigationBar(navController = navController) }
     )
 }
 
@@ -170,7 +169,8 @@ fun Standings(
 @Composable
 fun TeamCard(
     nbaTeam : StandingData,
-    infoScreenViewModel: InfoScreenViewModel)
+    infoScreenViewModel: InfoScreenViewModel
+)
 {
     val backgroundColor = if (nbaTeam.conference.name.equals("East", ignoreCase = true)) { //Changes color of the card, depending on the conference (red is normaly the western & blue the eastern conference)
         Color(red = 1, green = 87, blue = 155)

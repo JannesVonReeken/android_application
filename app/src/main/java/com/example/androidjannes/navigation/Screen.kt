@@ -1,4 +1,4 @@
-package com.example.androidjannes
+package com.example.androidjannes.navigation
 
 sealed class Screen(val route : String){
     object Start : Screen("start_screen") //Defining start screen name

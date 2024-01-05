@@ -1,9 +1,11 @@
-package com.example.androidjannes
+package com.example.androidjannes.data
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidjannes.room.Seasons
+import com.example.androidjannes.repositorys.SeasonsRepository
 import com.example.androidjannes.network.NbaApi
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -22,7 +24,8 @@ class StartScreenViewModel(private val seasonsRepository: SeasonsRepository): Vi
         viewModelScope.launch{
             val dbSeasons = seasonsRepository.getSeasons()?.seasons //Gets the seasons from the database
             if(dbSeasons != null){
-                seasons = NbaSeasonsState.Success(dbSeasons) //Show always first the database list to provide offline functionality
+                seasons =
+                    NbaSeasonsState.Success(dbSeasons) //Show always first the database list to provide offline functionality
             }
         }
         getSeasons() //Trys to make the API call to update the seasons
@@ -34,7 +37,7 @@ class StartScreenViewModel(private val seasonsRepository: SeasonsRepository): Vi
                     val seasonsResponse = NbaApi.retrofitService.getSeasons()
                     val remoteSeasons = seasonsResponse.response
                     seasonsRepository.insertSeasons(Seasons(remoteSeasons))
-                    NbaSeasonsState.Success(seasonsResponse.response)
+                NbaSeasonsState.Success(seasonsResponse.response)
             } catch (e: IOException){ //If the API isn't available the seasons list remains untouched
                 seasons
             }

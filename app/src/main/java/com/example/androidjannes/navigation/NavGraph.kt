@@ -1,9 +1,14 @@
-package com.example.androidjannes
+package com.example.androidjannes.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.androidjannes.data.InfoScreenViewModel
+import com.example.androidjannes.data.StartScreenViewModel
+import com.example.androidjannes.ui.screens.InfoScreen
+import com.example.androidjannes.ui.screens.StartScreen
+
 //Implementing the navigation for the app
 @Composable
 fun SetupNavGraph(

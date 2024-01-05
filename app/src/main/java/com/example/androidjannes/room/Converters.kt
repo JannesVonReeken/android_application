@@ -1,4 +1,4 @@
-package com.example.androidjannes
+package com.example.androidjannes.room
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

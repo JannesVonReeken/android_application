@@ -1,11 +1,10 @@
-package com.example.androidjannes
+package com.example.androidjannes.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
+import com.example.androidjannes.room.Seasons
 
 
 @Dao
