@@ -112,14 +112,19 @@ fun Seasons( //Shows the seasons from the API call from the startviewmodel
         .fillMaxSize())
     {
         items(seasons) {itemSeason -> //Every item stands for a season, listed on the screen
-            ListItem(
-                headlineText = {
-                    Text( text = itemSeason.toString()) },
+            Box(
                 modifier = Modifier
-                    .clickable { onItemClick(navController, infoScreenViewModel, itemSeason) },
-            )
-            Divider(modifier = Modifier
-                .padding(16.dp))
+                    .fillMaxWidth()
+                    .clickable { onItemClick(navController, infoScreenViewModel, itemSeason) }
+            ) {
+                Text(
+                    text = itemSeason.toString(),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp)
+                )
+            }
+            Divider(modifier = Modifier.padding(16.dp))
         }
     }
 }
