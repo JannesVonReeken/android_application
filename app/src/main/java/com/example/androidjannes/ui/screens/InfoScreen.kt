@@ -1,6 +1,7 @@
 package com.example.androidjannes.ui.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -93,9 +94,13 @@ fun Standings(
                 Column(modifier = modifier.fillMaxSize()) {
                     Spacer(modifier = Modifier.padding(8.dp))
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) { Text(stringResource(R.string.EastConference)) }
+                        modifier = Modifier
+                            .background(Color(240,241,242))
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center)
+                    {
+                        Text(stringResource(R.string.EastConference))
+                    }
                     Spacer(modifier = Modifier.padding(8.dp))
                     LazyColumn(
                         modifier = modifier
@@ -110,7 +115,11 @@ fun Standings(
                         }
                     }
                     Spacer(modifier = Modifier.padding(8.dp))
-                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(240,241,242)),
+                        contentAlignment = Alignment.Center)
+                    {
                         Text(stringResource(R.string.WestConference))
                     }
                     Spacer(modifier = Modifier.padding(8.dp))
