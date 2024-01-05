@@ -45,6 +45,7 @@ fun StartScreen( //Starting screen of the app
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
+                Infobox()
                 when(val seasonState = startScreenViewModel.seasons){ //Checks the status of the API call
                     is NbaSeasonsState.Success -> { //Data is available - Success
                         Seasons(
@@ -113,6 +114,17 @@ fun Seasons( //Shows the seasons from the API call from the startviewmodel
             }
             Divider(modifier = Modifier.padding(16.dp))
         }
+    }
+}
+
+@Composable
+fun Infobox(){
+    Box(modifier = Modifier
+        .background(Color(240, 241, 242))
+        .fillMaxWidth()
+        .height(56.dp),
+        contentAlignment = Alignment.Center){
+        Text(text = "Choose a Season:")
     }
 }
 
