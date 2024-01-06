@@ -1,6 +1,5 @@
 package com.example.androidjannes.data
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -9,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -25,7 +23,7 @@ sealed interface NbaStandingsState { //Error, Loading & Success states for the l
 }
 
 class InfoScreenViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle //To keep the state of the selected season
 ) : ViewModel() {
     var standings: NbaStandingsState by mutableStateOf(NbaStandingsState.Loading)
         private set //Real NBA standing state
@@ -73,14 +71,13 @@ class InfoScreenViewModel(
         return "W: ${standingData.win.total} L: ${standingData.loss.total} Rank: ${standingData.conference.rank}"
     }
 
-    companion object { //Allows us  to add an savedStateHandle
+    companion object { //Allows us  to add an savedStateHandle -> so we can keep the selected season
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(
                 modelClass: Class<T>,
                 extras: CreationExtras
             ): T {
-                val application = checkNotNull(extras[APPLICATION_KEY])
                 val savedStateHandle = extras.createSavedStateHandle()
 
                 return InfoScreenViewModel(

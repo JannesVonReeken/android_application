@@ -3,7 +3,6 @@ package com.example.androidjannes.room
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.androidjannes.room.Converters
 
 @Entity(tableName = "nbaSeasons")
 data class Seasons(

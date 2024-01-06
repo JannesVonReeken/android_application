@@ -1,15 +1,12 @@
 <resources>
     <string name="app_name">androidJannes</string>
-
-    <string name="text1_name">Next</string>
-    <string name="text2_name">Back</string>
     <string name="Title">NBA</string>
     <string name="EastConference">Eastern Conference</string>
     <string name="WestConference">Western Conference</string>
-    <string name="NoTeamsFound">No teams found for this season</string>
     <string name="SeasonNotLoading">No data available...</string>
     <string name="SeasonNotAvailable">No data for this season</string>
     <string name="Loading">Loading...</string>
     <string name="ChooseASeason">Choose a season:</string>
-    <string name="BackButton">Back</string>
+    <string name="HomeButton">Home</string>
+    <string name="SeasonsTag">seasons</string>
 </resources>

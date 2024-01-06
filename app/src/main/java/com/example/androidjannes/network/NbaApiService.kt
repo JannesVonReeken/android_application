@@ -1,6 +1,5 @@
 package com.example.androidjannes.network
 
-import androidx.compose.runtime.State
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

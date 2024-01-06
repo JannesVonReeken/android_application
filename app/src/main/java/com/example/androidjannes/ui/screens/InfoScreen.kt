@@ -30,9 +30,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -343,11 +341,10 @@ fun NavigationBar( //Navigationbar to navigate back to the seasons list
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = Icons.Default.Home,
-                            contentDescription = "HomeButton",
-                            modifier = Modifier
-                                .testTag("home")
+                            contentDescription = stringResource(R.string.HomeButton),
+
                         )
-                        Text(text = "Home", modifier = Modifier.alpha(0f))
+                        Text(text = stringResource(R.string.HomeButton), modifier = Modifier.alpha(0f))
                     }
                 }
             },

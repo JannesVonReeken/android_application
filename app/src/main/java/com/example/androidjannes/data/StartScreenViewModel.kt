@@ -1,12 +1,10 @@
 package com.example.androidjannes.data
 
 import android.app.Application
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.room.Room
@@ -33,7 +31,7 @@ class StartScreenViewModel(application: Application) : AndroidViewModel(applicat
 
     init {
 
-        val seasonsDatabase = Room.databaseBuilder( //Creating the seasonDatabase
+        val seasonsDatabase = Room.databaseBuilder( //Creating the seasonsDatabase
             getApplication<Application>().applicationContext,
             SeasonsDatabase::class.java, "seasons_database"
         ).build()

@@ -6,8 +6,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.androidjannes.data.InfoScreenViewModel
-import com.example.androidjannes.data.StartScreenViewModel
 import com.example.androidjannes.ui.screens.InfoScreen
 import com.example.androidjannes.ui.screens.StartScreen
 
@@ -30,11 +28,14 @@ fun SetupNavGraph(
         composable(
             route = "${Screen.Info.route}/{selectedSeason}", //Adds the selected seasons as an argument
             arguments = listOf(
-                navArgument("selectedSeason") { type = NavType.IntType}
+                navArgument("selectedSeason") { type = NavType.IntType }
             )
-        ) {backStackEntry ->
+        ) { backStackEntry ->
             val selectedSeason = backStackEntry.arguments?.getInt("selectedSeason") ?: -1
-            InfoScreen(navController = navController, selectedSeason = selectedSeason) //selectedSeason
+            InfoScreen(
+                navController = navController,
+                selectedSeason = selectedSeason
+            ) //selectedSeason
         }
     }
 }

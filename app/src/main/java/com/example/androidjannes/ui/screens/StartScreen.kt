@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -26,10 +25,8 @@ import androidx.navigation.NavController
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androidjannes.data.InfoScreenViewModel
 import com.example.androidjannes.data.NbaSeasonsState
 import com.example.androidjannes.R
-import com.example.androidjannes.navigation.Screen
 import com.example.androidjannes.data.StartScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +120,7 @@ fun SeasonsList(
         items(seasons) { itemSeason -> //Every item stands for a season, listed on the screen
             Box(
                 modifier = Modifier
-                    .testTag("seasons")
+                    .testTag(stringResource(R.string.SeasonsTag))
                     .fillMaxWidth()
                     .clickable { startScreenViewModel.onItemClick(navController, itemSeason) }
             ) {

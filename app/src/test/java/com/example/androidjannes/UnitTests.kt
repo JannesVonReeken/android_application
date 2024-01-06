@@ -1,12 +1,6 @@
 package com.example.androidjannes
 
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.lifecycle.SavedStateHandle
-import com.example.androidjannes.data.InfoScreenViewModel
 import com.example.androidjannes.room.Converters
-import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import org.junit.Test
 import org.junit.Assert.*
 

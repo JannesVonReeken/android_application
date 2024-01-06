@@ -39,9 +39,12 @@ class UIandNavigationTests {
 
     @Test
     fun onSeasonClickChangeScreenToInfoScreen() { //Tests if the screen changes from StartScreen to InfoScreen, when the user clicks on a season
-        Thread.sleep(1000)
-        rule.onNodeWithText("2019")
-            .performClick()
+        rule.waitUntil(timeoutMillis = 10_000) {
+            rule.onAllNodesWithTag("seasons")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        rule.onAllNodesWithTag("seasons")[6].performClick()
 
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, "info_screen/{selectedSeason}")
