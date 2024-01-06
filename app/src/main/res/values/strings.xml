@@ -7,5 +7,6 @@
     <string name="EastConference">Eastern Conference</string>
     <string name="WestConference">Western Conference</string>
     <string name="NoTeamsFound">No teams found for this season</string>
-
+    <string name="SeasonNotLoading">No data available...</string>
+    <string name="SeasonNotAvailable">No data for this season</string>
 </resources>

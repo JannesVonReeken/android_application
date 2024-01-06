@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -69,7 +70,7 @@ fun InfoScreen(
                         Box(modifier = Modifier
                             .fillMaxSize(),
                             contentAlignment = Alignment.Center){
-                            Text(text = "No season data available...")
+                            Text(stringResource(R.string.SeasonNotLoading))
                         }
                     }
                 }
@@ -91,92 +92,124 @@ fun Standings(
     val configuration = LocalConfiguration.current
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> { //Portrait view
-                Column(modifier = modifier.fillMaxSize()) {
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .background(Color(240,241,242))
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center)
-                    {
-                        Text(stringResource(R.string.EastConference))
-                    }
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    LazyColumn(
-                        modifier = modifier
-                            .weight(1f),
-                        state = infoScreenViewModel.eastConferenceScrollState
-                    ) {
-                        items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(
-                                infoScreenViewModel = infoScreenViewModel,
-                                nbaTeam = item
-                            ) //Adds eastern conference teams & sorts them by total wins and losses
-                        }
-                    }
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(240,241,242)),
-                        contentAlignment = Alignment.Center)
-                    {
-                        Text(stringResource(R.string.WestConference))
-                    }
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    LazyColumn(
-                        modifier = modifier
-                            .weight(1f),
-                        state = infoScreenViewModel.westConferenceScrollState
-                    ) {
-                        items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(
-                                infoScreenViewModel = infoScreenViewModel,
-                                nbaTeam = item
-                            ) //Adds western conference teams & sorts them by total wins and losses
-                        }
-                    }
+            if(eastConference.isNotEmpty()){
+                PortraitStandings(infoScreenViewModel = infoScreenViewModel, eastConference = eastConference, westConference = westConference)
+            } else{
+                Box(modifier = Modifier
+                    .fillMaxSize(),
+                    contentAlignment = Alignment.Center){
+                    Text(stringResource(R.string.SeasonNotAvailable))
+                }
             }
         }
     }
     when(configuration.orientation){
         Configuration.ORIENTATION_LANDSCAPE -> { //Landscape view
-            Row(modifier = modifier.fillMaxSize()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                        .padding(16.dp)
-                ) {
-                    Text(stringResource(R.string.EastConference))
-                    LazyColumn(
-                        state = infoScreenViewModel.eastConferenceScrollState
+            if(eastConference.isNotEmpty()) {
+                Row(modifier = modifier.fillMaxSize()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                            .padding(16.dp)
                     ) {
-                        items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
+                        Text(stringResource(R.string.EastConference))
+                        LazyColumn(
+                            state = infoScreenViewModel.eastConferenceScrollState
+                        ) {
+                            items(eastConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+                                TeamCard(
+                                    infoScreenViewModel = infoScreenViewModel,
+                                    nbaTeam = item
+                                ) //Adds eastern conference teams & sorts them by total wins and losses
+                            }
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                            .padding(16.dp)
+                    ) {
+                        Text(stringResource(R.string.WestConference))
+                        LazyColumn(
+                            state = infoScreenViewModel.westConferenceScrollState
+                        ) {
+                            items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+                                TeamCard(
+                                    infoScreenViewModel = infoScreenViewModel,
+                                    nbaTeam = item
+                                ) //Adds eastern conference teams & sorts them by total wins and losses
+                            }
                         }
                     }
                 }
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                        .padding(16.dp)
+            } else{
+                Box(modifier = Modifier
+                    .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(stringResource(R.string.WestConference))
-                    LazyColumn(
-                        state = infoScreenViewModel.westConferenceScrollState
-                    ) {
-                        items(westConference.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
-                            TeamCard(infoScreenViewModel = infoScreenViewModel, nbaTeam = item) //Adds eastern conference teams & sorts them by total wins and losses
-                        }
-                    }
+                    Text(text = "No data available for this season")
                 }
             }
         }
     }
 }
 @Composable
-fun TeamCard(
+fun ConferenceHeader( //The header for each conference
+    conference : String
+)
+{
+    Spacer(modifier = Modifier.padding(8.dp))
+    Box(
+        modifier = Modifier
+            .background(Color(240, 241, 242))
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    )
+    {
+        Text(conference)
+    }
+}
+
+@Composable
+fun PortraitStandings(
+    modifier: Modifier = Modifier,
+    infoScreenViewModel: InfoScreenViewModel,
+    eastConference: List<StandingData>,
+    westConference: List<StandingData>
+){
+    Column(modifier = modifier.fillMaxSize()) {
+        ConferenceHeader(conference = stringResource(R.string.EastConference))
+        Spacer(modifier = Modifier.padding(8.dp))
+        TeamList(modifier = modifier.weight(1f), infoScreenViewModel = infoScreenViewModel, conferenceList = eastConference, scrollState = infoScreenViewModel.eastConferenceScrollState)
+        ConferenceHeader(conference = stringResource(R.string.WestConference))
+        Spacer(modifier = Modifier.padding(8.dp))
+        TeamList(modifier = modifier.weight(1f), infoScreenViewModel = infoScreenViewModel, conferenceList = westConference, scrollState = infoScreenViewModel.westConferenceScrollState)
+    }
+}
+
+@Composable
+fun TeamList( //Creates & orders the list for the choosen conference
+    modifier: Modifier,
+    infoScreenViewModel : InfoScreenViewModel,
+    conferenceList : List<StandingData>,
+    scrollState : LazyListState
+){
+    LazyColumn(
+        modifier = modifier,
+        state = scrollState
+    ) {
+        items(conferenceList.sortedWith(compareByDescending<StandingData> { it.win.total }.thenBy { it.loss.total })) { item ->
+            TeamCard(
+                infoScreenViewModel = infoScreenViewModel,
+                nbaTeam = item
+            )
+        }
+    }
+}
+@Composable
+fun TeamCard( //Creates the Teamcards with the names,ranks,scores and logos
     nbaTeam : StandingData,
     infoScreenViewModel: InfoScreenViewModel
 )
