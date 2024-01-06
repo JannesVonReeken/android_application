@@ -45,20 +45,15 @@ fun StartScreen( //Starting screen of the app
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                Infobox()
                 when(val seasonState = startScreenViewModel.seasons){ //Checks the status of the API call
                     is NbaSeasonsState.Success -> { //Data is available - Success
-                        Seasons(
-                            seasons = seasonState.seasons,
-                            infoScreenViewModel = infoScreenViewModel ,
-                            navController = navController
-                        )
+                        SeasonsView(seasons = seasonState.seasons, infoScreenViewModel = infoScreenViewModel, navController = navController)
                     }
                     NbaSeasonsState.Loading -> { //Loading
-                        Text(text = "Loading...")
+                        OnLoading()
                     }
                     NbaSeasonsState.Error -> { //No data found or not available
-                        Text(text = "Error loading seasons")
+                       OnError()
                     }
                 }
             }
@@ -88,9 +83,18 @@ fun AppHeader( //Header for the App
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Seasons( //Shows the seasons from the API call from the startviewmodel
+fun SeasonsView( //Final view of the list
+    seasons: List<Int>,
+    infoScreenViewModel: InfoScreenViewModel,
+    navController: NavController
+){
+    Infobox()
+    SeasonsList(seasons = seasons, infoScreenViewModel = infoScreenViewModel, navController = navController)
+}
+
+@Composable
+fun SeasonsList( //Shows the seasons from the API call from the startviewmodel
     modifier: Modifier = Modifier,
     seasons : List<Int>,
     infoScreenViewModel: InfoScreenViewModel,
@@ -118,13 +122,13 @@ fun Seasons( //Shows the seasons from the API call from the startviewmodel
 }
 
 @Composable
-fun Infobox(){
+fun Infobox(){ //Shows the advice to choose a season
     Box(modifier = Modifier
         .background(Color(240, 241, 242))
         .fillMaxWidth()
         .height(56.dp),
         contentAlignment = Alignment.Center){
-        Text(text = "Choose a Season:")
+        Text(stringResource(R.string.ChooseASeason))
     }
 }
 
