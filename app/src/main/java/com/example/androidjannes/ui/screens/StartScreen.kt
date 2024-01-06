@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -36,6 +37,8 @@ fun StartScreen( //Starting screen of the app
     startScreenViewModel: StartScreenViewModel,
     infoScreenViewModel: InfoScreenViewModel //Needed to set the selected season to the new value
 ){
+    val lazyListState = rememberLazyListState()
+
     Scaffold(
         topBar = {
             AppHeader()
@@ -47,7 +50,11 @@ fun StartScreen( //Starting screen of the app
             ) {
                 when(val seasonState = startScreenViewModel.seasons){ //Checks the status of the API call
                     is NbaSeasonsState.Success -> { //Data is available - Success
-                        SeasonsView(seasons = seasonState.seasons, infoScreenViewModel = infoScreenViewModel, navController = navController)
+                        SeasonsView(
+                            seasons = seasonState.seasons,
+                            infoScreenViewModel = infoScreenViewModel,
+                            navController = navController
+                            )
                     }
                     NbaSeasonsState.Loading -> { //Loading
                         OnLoading()
@@ -87,10 +94,13 @@ fun AppHeader( //Header for the App
 fun SeasonsView( //Final view of the list
     seasons: List<Int>,
     infoScreenViewModel: InfoScreenViewModel,
-    navController: NavController
+    navController: NavController,
 ){
     Infobox()
-    SeasonsList(seasons = seasons, infoScreenViewModel = infoScreenViewModel, navController = navController)
+    SeasonsList(
+        seasons = seasons,
+        infoScreenViewModel = infoScreenViewModel,
+        navController = navController)
 }
 
 @Composable

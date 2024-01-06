@@ -73,7 +73,7 @@ fun InfoScreen(
             }
 
         },
-        bottomBar = { NavigationBar(navController = navController) }
+        bottomBar = { NavigationBar(navController = navController, infoScreenViewModel = infoScreenViewModel) }
     )
 }
 
@@ -284,7 +284,8 @@ fun NoDataAvailable(){ //If no datas are available for this season
 @Composable
 fun NavigationBar( //Navigationbar to navigate back to the seasons list
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    infoScreenViewModel: InfoScreenViewModel
 ){
     androidx.compose.material3.NavigationBar(
         modifier = modifier
@@ -298,6 +299,8 @@ fun NavigationBar( //Navigationbar to navigate back to the seasons list
             },
             selected = true,
             onClick = {
+                infoScreenViewModel.resetScrollState(infoScreenViewModel.westConferenceScrollState)
+                infoScreenViewModel.resetScrollState(infoScreenViewModel.eastConferenceScrollState)
                 navController.navigate(Screen.Start.route)
             }
         )

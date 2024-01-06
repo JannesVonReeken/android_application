@@ -1,4 +1,5 @@
 package com.example.androidjannes.data
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -42,5 +43,12 @@ class StartScreenViewModel(private val seasonsRepository: SeasonsRepository): Vi
                 seasons
             }
         }
+    }
+
+    private var seasonsListScrollStateValue: LazyListState? by mutableStateOf(null)
+
+    @JvmName("getSeasonsListScrollState")
+    fun getSeasonsListScrollState(): LazyListState? {
+        return seasonsListScrollStateValue
     }
 }

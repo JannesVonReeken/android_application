@@ -1,5 +1,6 @@
 package com.example.androidjannes.data
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -26,6 +27,12 @@ class InfoScreenViewModel() : ViewModel() {
 
     var westConferenceScrollState: LazyListState = LazyListState()
         private set //Saves the scroll state for the conference
+
+    fun resetScrollState(scrollState: LazyListState){ //Resets the scrollstate from the western or eastern conference
+        viewModelScope.launch {
+            scrollState.scrollToItem(0)
+        }
+    }
 
     private val _selectedSeason = mutableStateOf(0)
     val selectedSeason: State<Int> get() = _selectedSeason //gets the "_selectedSeason"
