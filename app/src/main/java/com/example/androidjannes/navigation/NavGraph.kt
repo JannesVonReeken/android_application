@@ -28,13 +28,13 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = "${Screen.Info.route}/{selectedSeason}",
+            route = "${Screen.Info.route}/{selectedSeason}", //Adds the selected seasons as an argument
             arguments = listOf(
                 navArgument("selectedSeason") { type = NavType.IntType}
             )
         ) {backStackEntry ->
             val selectedSeason = backStackEntry.arguments?.getInt("selectedSeason") ?: -1
-            InfoScreen(navController = navController, selectedSeason = selectedSeason)
+            InfoScreen(navController = navController, selectedSeason = selectedSeason) //selectedSeason
         }
     }
 }

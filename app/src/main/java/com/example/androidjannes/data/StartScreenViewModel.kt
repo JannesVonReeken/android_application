@@ -67,19 +67,11 @@ class StartScreenViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    private var seasonsListScrollStateValue: LazyListState? by mutableStateOf(null)
-
-    @JvmName("getSeasonsListScrollState")
-    fun getSeasonsListScrollState(): LazyListState? {
-        return seasonsListScrollStateValue
-    }
-
-    fun onItemClick( //When a season is selected, the navController navigates to the Information screen & the infoscreenviewmodel sets to the selected season
+    fun onItemClick( //When a season is clicked, the navController navigates to the infoscreen & adds the season-parameter
         navController: NavController,
         season: Int
     ) {
-        //infoScreenViewModel.setSelectedYear(season)
-        navController.navigate("${Screen.Info.route}/$season")
+        navController.navigate("${Screen.Info.route}/$season") //Adds the selected season
     }
 
 }

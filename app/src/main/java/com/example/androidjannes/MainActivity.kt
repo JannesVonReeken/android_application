@@ -23,21 +23,8 @@ import com.example.androidjannes.ui.theme.AndroidJannesTheme
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
-//    private lateinit var seasonsDao: SeasonsDao
-//    private lateinit var seasonsRepository: SeasonsRepository
-//    private val startScreenViewModel: StartScreenViewModel by viewModels() { //Setting up a startScreenViewmodel
-//        StartScreenViewModelFactory(seasonsRepository = seasonsRepository)
-//    }
-    private val infoScreenViewModel: InfoScreenViewModel by viewModels() //Setting up a infoSchreenViewmodel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val seasonsDatabase = Room.databaseBuilder( //Creating the seasonDatabase
-//            applicationContext,
-//            SeasonsDatabase::class.java, "seasons_database"
-//        ).build()
-//
-//        seasonsDao = seasonsDatabase.dao
-//        seasonsRepository = SeasonsRepository(seasonsDao)
         setContent {
             AndroidJannesTheme { //Using of this Theme
                 Surface(

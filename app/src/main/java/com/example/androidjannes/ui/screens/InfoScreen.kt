@@ -26,11 +26,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -337,16 +339,21 @@ fun NavigationBar( //Navigationbar to navigate back to the seasons list
     ) {
         NavigationBarItem(
             icon = {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = stringResource(R.string.HomeButton),
-                    modifier = Modifier
-                        .testTag("HomeButton")
-                )
+                Column {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "HomeButton",
+                            modifier = Modifier
+                                .testTag("home")
+                        )
+                        Text(text = "Home", modifier = Modifier.alpha(0f))
+                    }
+                }
             },
             selected = true,
             onClick = {
-                infoScreenViewModel.resetScrollState(infoScreenViewModel.westConferenceScrollState)
+                infoScreenViewModel.resetScrollState(infoScreenViewModel.westConferenceScrollState) //Resets the scrollstates after going back to the seasons screen
                 infoScreenViewModel.resetScrollState(infoScreenViewModel.eastConferenceScrollState)
                 navController.navigate(Screen.Start.route)
             }

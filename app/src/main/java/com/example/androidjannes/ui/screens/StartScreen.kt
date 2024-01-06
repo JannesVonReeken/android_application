@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material3.Scaffold
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidjannes.data.InfoScreenViewModel
 import com.example.androidjannes.data.NbaSeasonsState
@@ -37,8 +38,6 @@ fun StartScreen( //Starting screen of the app
     navController: NavController,
     startScreenViewModel: StartScreenViewModel = viewModel()
 ) {
-    val lazyListState = rememberLazyListState()
-
     Scaffold(
         topBar = {
             AppHeader()
@@ -124,6 +123,7 @@ fun SeasonsList(
         items(seasons) { itemSeason -> //Every item stands for a season, listed on the screen
             Box(
                 modifier = Modifier
+                    .testTag("seasons")
                     .fillMaxWidth()
                     .clickable { startScreenViewModel.onItemClick(navController, itemSeason) }
             ) {
