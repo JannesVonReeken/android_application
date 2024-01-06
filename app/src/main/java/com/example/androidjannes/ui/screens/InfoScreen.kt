@@ -29,8 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -39,11 +41,13 @@ import com.example.androidjannes.data.NbaStandingsState
 import com.example.androidjannes.R
 import com.example.androidjannes.navigation.Screen
 import com.example.androidjannes.network.StandingData
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
     navController: NavController,
-    infoScreenViewModel: InfoScreenViewModel
+    infoScreenViewModel: InfoScreenViewModel = viewModel(),
+    selectedSeason: Int
 ) {
 
     Scaffold(
@@ -55,15 +59,18 @@ fun InfoScreen(
                 modifier =
                 Modifier.padding(contentPadding)
             ) {
-                when (val standingsState = infoScreenViewModel.standings) { //Standingsstate from the infoscreenViewmodel
+                when (val standingsState =
+                    infoScreenViewModel.standings) { //Standingsstate from the infoscreenViewmodel
                     is NbaStandingsState.Success -> { //On Success it loads the standings composable
                         Standings(
                             infoScreenViewModel = infoScreenViewModel,
                             standings =
-                            standingsState.standings )
+                            standingsState.standings
+                        )
                     }
+
                     NbaStandingsState.Loading -> { //On loading
-                    OnLoading()
+                        OnLoading()
                     }
 
                     NbaStandingsState.Error -> { //If something didn't worked
@@ -73,7 +80,12 @@ fun InfoScreen(
             }
 
         },
-        bottomBar = { NavigationBar(navController = navController, infoScreenViewModel = infoScreenViewModel) }
+        bottomBar = {
+            NavigationBar(
+                navController = navController,
+                infoScreenViewModel = infoScreenViewModel
+            )
+        }
     )
 }
 
@@ -81,76 +93,94 @@ fun InfoScreen(
 fun Standings(
     infoScreenViewModel: InfoScreenViewModel,
     modifier: Modifier = Modifier,
-    standings : List<StandingData>,
+    standings: List<StandingData>,
 ) {
-    val eastConference = standings.filter { it.conference.name.equals("East", ignoreCase = true) } //Splits the teams in eastern & western conference, depending on the standing
+    val eastConference = standings.filter {
+        it.conference.name.equals(
+            "East",
+            ignoreCase = true
+        )
+    } //Splits the teams in eastern & western conference, depending on the standing
     val westConference = standings.filter { it.conference.name.equals("West", ignoreCase = true) }
     val configuration = LocalConfiguration.current
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> { //Portrait view
-            if(eastConference.isNotEmpty()){
+            if (eastConference.isNotEmpty()) {
                 PortraitStandings(
                     infoScreenViewModel = infoScreenViewModel,
                     eastConference = eastConference,
-                    westConference = westConference)
-            } else{
+                    westConference = westConference
+                )
+            } else {
                 NoDataAvailable()
             }
         }
     }
-    when(configuration.orientation){
+    when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> { //Landscape view
-            if(eastConference.isNotEmpty()) {
+            if (eastConference.isNotEmpty()) {
                 StandingsLandscape(
                     modifier = modifier,
                     eastConference = eastConference,
                     westConference = westConference,
                     infoScreenViewModel = infoScreenViewModel
                 )
-            } else{
+            } else {
                 NoDataAvailable()
             }
         }
     }
 }
+
 @Composable
 fun PortraitStandings( //Final view for the portrait mode
     modifier: Modifier = Modifier,
     infoScreenViewModel: InfoScreenViewModel,
     eastConference: List<StandingData>,
     westConference: List<StandingData>
-){
+) {
     Column(modifier = modifier.fillMaxSize()) {
         ConferenceHeader(conference = stringResource(R.string.EastConference))
-        TeamList(modifier = modifier.weight(1f), infoScreenViewModel = infoScreenViewModel, conferenceList = eastConference, scrollState = infoScreenViewModel.eastConferenceScrollState)
+        TeamList(
+            modifier = modifier.weight(1f),
+            infoScreenViewModel = infoScreenViewModel,
+            conferenceList = eastConference,
+            scrollState = infoScreenViewModel.eastConferenceScrollState
+        )
         ConferenceHeader(conference = stringResource(R.string.WestConference))
-        TeamList(modifier = modifier.weight(1f), infoScreenViewModel = infoScreenViewModel, conferenceList = westConference, scrollState = infoScreenViewModel.westConferenceScrollState)
+        TeamList(
+            modifier = modifier.weight(1f),
+            infoScreenViewModel = infoScreenViewModel,
+            conferenceList = westConference,
+            scrollState = infoScreenViewModel.westConferenceScrollState
+        )
     }
 }
 
 @Composable
-fun StandingsLandscape( //Final view for the landscape mode
+fun StandingsLandscape(
+    //Final view for the landscape mode
     modifier: Modifier,
     eastConference: List<StandingData>,
     westConference: List<StandingData>,
     infoScreenViewModel: InfoScreenViewModel,
-){
-  Row {
-      StandingsColumnLandscape(
-          modifier = modifier.weight(1f), //Set weight to split the row in the middle
-          conference = eastConference,
-          infoScreenViewModel = infoScreenViewModel,
-          conferenceName = stringResource(R.string.EastConference),
-          scrollState = infoScreenViewModel.eastConferenceScrollState //Hold the scrollstate
-      )
-      StandingsColumnLandscape(
-          modifier = modifier.weight(1f), //Set weight to split the row in the middle
-          conference = westConference,
-          infoScreenViewModel = infoScreenViewModel,
-          conferenceName = stringResource(R.string.WestConference),
-          scrollState = infoScreenViewModel.westConferenceScrollState //Hold the scrollstate
-      )
-  }
+) {
+    Row {
+        StandingsColumnLandscape(
+            modifier = modifier.weight(1f), //Set weight to split the row in the middle
+            conference = eastConference,
+            infoScreenViewModel = infoScreenViewModel,
+            conferenceName = stringResource(R.string.EastConference),
+            scrollState = infoScreenViewModel.eastConferenceScrollState //Hold the scrollstate
+        )
+        StandingsColumnLandscape(
+            modifier = modifier.weight(1f), //Set weight to split the row in the middle
+            conference = westConference,
+            infoScreenViewModel = infoScreenViewModel,
+            conferenceName = stringResource(R.string.WestConference),
+            scrollState = infoScreenViewModel.westConferenceScrollState //Hold the scrollstate
+        )
+    }
 }
 
 @Composable
@@ -160,24 +190,26 @@ fun StandingsColumnLandscape( //Combination of the conference Name & the confere
     infoScreenViewModel: InfoScreenViewModel,
     conferenceName: String,
     scrollState: LazyListState
-){
+) {
     Column(
         modifier = modifier
-            .fillMaxSize())
+            .fillMaxSize()
+    )
     {
         ConferenceHeader(conferenceName)
-        TeamList(modifier = modifier,
+        TeamList(
+            modifier = modifier,
             infoScreenViewModel = infoScreenViewModel,
             conferenceList = conference,
-            scrollState = scrollState)
+            scrollState = scrollState
+        )
     }
 }
 
 @Composable
 fun ConferenceHeader( //The header for each conference - text is centered
-    conference : String
-)
-{
+    conference: String
+) {
     Spacer(modifier = Modifier.padding(8.dp))
     Box(
         modifier = Modifier
@@ -194,15 +226,16 @@ fun ConferenceHeader( //The header for each conference - text is centered
 @Composable
 fun TeamList( //Creates & orders the list for the choosen conference
     modifier: Modifier,
-    infoScreenViewModel : InfoScreenViewModel,
-    conferenceList : List<StandingData>,
-    scrollState : LazyListState
-){
+    infoScreenViewModel: InfoScreenViewModel,
+    conferenceList: List<StandingData>,
+    scrollState: LazyListState
+) {
     LazyColumn(
         modifier = modifier,
         state = scrollState
     ) {
-        items(conferenceList.sortedWith(compareBy<StandingData> { it.conference.rank }.thenBy { it.conference.win }.thenBy { it.conference.loss })) { item -> //Order by Rank, Wins & Losses
+        items(conferenceList.sortedWith(compareBy<StandingData> { it.conference.rank }.thenBy { it.conference.win }
+            .thenBy { it.conference.loss })) { item -> //Order by Rank, Wins & Losses
             TeamCard(
                 infoScreenViewModel = infoScreenViewModel,
                 nbaTeam = item
@@ -213,11 +246,14 @@ fun TeamList( //Creates & orders the list for the choosen conference
 
 @Composable
 fun TeamCard( //Creates the Teamcards with the names,ranks,scores and logos
-    nbaTeam : StandingData,
+    nbaTeam: StandingData,
     infoScreenViewModel: InfoScreenViewModel
-)
-{
-    val backgroundColor = if (nbaTeam.conference.name.equals("East", ignoreCase = true)) { //Changes color of the card, depending on the conference (red is normaly the western & blue the eastern conference)
+) {
+    val backgroundColor = if (nbaTeam.conference.name.equals(
+            "East",
+            ignoreCase = true
+        )
+    ) { //Changes color of the card, depending on the conference (red is normaly the western & blue the eastern conference)
         Color(red = 1, green = 87, blue = 155)
     } else {
         Color.Red
@@ -233,50 +269,59 @@ fun TeamCard( //Creates the Teamcards with the names,ranks,scores and logos
         ),
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
-            Column(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
-            ) 
-            { 
-                Text(
-                    text = nbaTeam.team.name,
-                    color = Color.White
-                )
-                Text(infoScreenViewModel.calculateDisplayValues(nbaTeam), color = Color.White)
-                AsyncImage( //Load the team logos
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(nbaTeam.team.logo)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "${nbaTeam.team.name} logo",
-                    modifier = Modifier
-                        .size(75.dp, 75.dp))
-            }
+        )
+        {
+            Text(
+                text = nbaTeam.team.name,
+                color = Color.White
+            )
+            Text(infoScreenViewModel.calculateDisplayValues(nbaTeam), color = Color.White)
+            AsyncImage( //Load the team logos
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(nbaTeam.team.logo)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "${nbaTeam.team.name} logo",
+                modifier = Modifier
+                    .size(75.dp, 75.dp)
+            )
+        }
     }
 }
+
 @Composable
-fun OnLoading(){ //If its loading
-    Box(modifier = Modifier
-        .fillMaxSize(),
-        contentAlignment = Alignment.Center){
+fun OnLoading() { //If its loading
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Text(stringResource(R.string.Loading))
     }
 }
 
 @Composable
-fun OnError(){ //If something went wrong
-    Box(modifier = Modifier
-        .fillMaxSize(),
-        contentAlignment = Alignment.Center){
+fun OnError() { //If something went wrong
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Text(stringResource(R.string.SeasonNotLoading))
     }
 }
 
 @Composable
-fun NoDataAvailable(){ //If no datas are available for this season
-    Box(modifier = Modifier
-        .fillMaxSize(),
-        contentAlignment = Alignment.Center){
+fun NoDataAvailable() { //If no datas are available for this season
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Text(stringResource(R.string.SeasonNotAvailable))
     }
 }
@@ -286,7 +331,7 @@ fun NavigationBar( //Navigationbar to navigate back to the seasons list
     modifier: Modifier = Modifier,
     navController: NavController,
     infoScreenViewModel: InfoScreenViewModel
-){
+) {
     androidx.compose.material3.NavigationBar(
         modifier = modifier
     ) {
@@ -294,7 +339,9 @@ fun NavigationBar( //Navigationbar to navigate back to the seasons list
             icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.HomeButton),
+                    modifier = Modifier
+                        .testTag("HomeButton")
                 )
             },
             selected = true,

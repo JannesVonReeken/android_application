@@ -11,4 +11,5 @@
     <string name="SeasonNotAvailable">No data for this season</string>
     <string name="Loading">Loading...</string>
     <string name="ChooseASeason">Choose a season:</string>
+    <string name="HomeButton">Home button:</string>
 </resources>

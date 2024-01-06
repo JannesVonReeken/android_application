@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.androidjannes.data.InfoScreenViewModel
 import com.example.androidjannes.data.StartScreenViewModel
-import com.example.androidjannes.data.StartScreenViewModelFactory
 import com.example.androidjannes.navigation.SetupNavGraph
 import com.example.androidjannes.repositorys.SeasonsRepository
 import com.example.androidjannes.room.SeasonsDao
@@ -24,20 +23,21 @@ import com.example.androidjannes.ui.theme.AndroidJannesTheme
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
-    private lateinit var seasonsDao: SeasonsDao
-    private lateinit var seasonsRepository: SeasonsRepository
-    private val startScreenViewModel : StartScreenViewModel by viewModels(){ //Setting up a startScreenViewmodel
-        StartScreenViewModelFactory(seasonsRepository = seasonsRepository) }
-    private val infoScreenViewModel : InfoScreenViewModel by viewModels() //Setting up a infoSchreenViewmodel
+//    private lateinit var seasonsDao: SeasonsDao
+//    private lateinit var seasonsRepository: SeasonsRepository
+//    private val startScreenViewModel: StartScreenViewModel by viewModels() { //Setting up a startScreenViewmodel
+//        StartScreenViewModelFactory(seasonsRepository = seasonsRepository)
+//    }
+    private val infoScreenViewModel: InfoScreenViewModel by viewModels() //Setting up a infoSchreenViewmodel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val seasonsDatabase = Room.databaseBuilder( //Creating the seasonDatabase
-            applicationContext,
-            SeasonsDatabase::class.java, "seasons_database"
-        ).build()
-
-        seasonsDao = seasonsDatabase.dao
-        seasonsRepository = SeasonsRepository(seasonsDao)
+//        val seasonsDatabase = Room.databaseBuilder( //Creating the seasonDatabase
+//            applicationContext,
+//            SeasonsDatabase::class.java, "seasons_database"
+//        ).build()
+//
+//        seasonsDao = seasonsDatabase.dao
+//        seasonsRepository = SeasonsRepository(seasonsDao)
         setContent {
             AndroidJannesTheme { //Using of this Theme
                 Surface(
@@ -45,10 +45,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     navController = rememberNavController()
-                    SetupNavGraph( //Setting up the navigation controller
-                        navController = navController,
-                        startScreenViewModel = startScreenViewModel,
-                        infoScreenViewModel = infoScreenViewModel,
+                    SetupNavGraph(
+                        //Setting up the navigation controller
+                        navController = navController
                     )
                 }
             }
