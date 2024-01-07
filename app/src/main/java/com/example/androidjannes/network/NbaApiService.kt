@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private const val BASE_URL = "https://api-nba-v1.p.rapidapi.com"
-private const val API_KEY = "Placeholder" //Add API Key here
+private const val API_KEY = "PlaceHolder" //!!!Insert API Key here!!!
 
 private val retrofit = Retrofit.Builder() //Creating Retrofit Object for the NBA API
     .addConverterFactory(GsonConverterFactory.create())
