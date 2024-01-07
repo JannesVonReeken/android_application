@@ -15,6 +15,7 @@ import com.example.androidjannes.ui.theme.AndroidJannesTheme
 
 class MainActivity : ComponentActivity() {
 
+    // NavController for managing navigation within the app
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     navController = rememberNavController()
                     SetupNavGraph(
-                        //Setting up the navigation controller
+                        //Setting up the navigation graph
                         navController = navController
                     )
                 }

@@ -16,14 +16,22 @@ import com.example.androidjannes.network.StandingData
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-sealed interface NbaStandingsState { //Error, Loading & Success states for the loading
+/**
+ * Sealed interface representing the different states.
+ */
+sealed interface NbaStandingsState {
     data class Success(val standings: List<StandingData>) : NbaStandingsState
     object Loading : NbaStandingsState
     object Error : NbaStandingsState
 }
 
+/**
+ * ViewModel for the information screen, responsible for managing NBA standings data.
+ *
+ * @property savedStateHandle SavedStateHandle to keep the state of the selected season.
+ */
 class InfoScreenViewModel(
-    private val savedStateHandle: SavedStateHandle //To keep the state of the selected season
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var standings: NbaStandingsState by mutableStateOf(NbaStandingsState.Loading)
         private set //Real NBA standing state
@@ -34,7 +42,12 @@ class InfoScreenViewModel(
     var westConferenceScrollState: LazyListState = LazyListState()
         private set //Saves the scroll state for the conference
 
-    fun resetScrollState(scrollState: LazyListState) { //Resets the scrollstate from the western or eastern conference
+    /**
+     * Resets the scroll state for a choosen conference.
+     *
+     * @param scrollState The LazyListState to be reset.
+     */
+    fun resetScrollState(scrollState: LazyListState) {
         viewModelScope.launch {
             scrollState.scrollToItem(0)
         }
@@ -54,7 +67,10 @@ class InfoScreenViewModel(
         getStandings()
     }
 
-    private fun getStandings() { //Makes the API call to get the current standings, depending on the chooses season
+    /**
+     * Makes an API call to retrieve NBA standings based on the selected season.
+     */
+    private fun getStandings() {
         val currentSelectedSeason = selectedSeason.value
         viewModelScope.launch {
             standings = try {
@@ -71,6 +87,9 @@ class InfoScreenViewModel(
         return "W: ${standingData.win.total} L: ${standingData.loss.total} Rank: ${standingData.conference.rank}"
     }
 
+    /**
+     * Allowing the addition of a savedStateHandle for creating the ViewModel.
+     */
     companion object { //Allows us  to add an savedStateHandle -> so we can keep the selected season
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")

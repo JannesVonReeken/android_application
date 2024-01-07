@@ -29,9 +29,15 @@ import com.example.androidjannes.data.NbaSeasonsState
 import com.example.androidjannes.R
 import com.example.androidjannes.data.StartScreenViewModel
 
+/**
+ * Representing the starting screen of the app.
+ *
+ * @param navController NavController for handling navigation.
+ * @param startScreenViewModel The ViewModel providing data for the StartScreen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen( //Starting screen of the app
+fun StartScreen(
     navController: NavController,
     startScreenViewModel: StartScreenViewModel = viewModel()
 ) {
@@ -68,8 +74,13 @@ fun StartScreen( //Starting screen of the app
     )
 }
 
+/**
+ * Header for the app.
+ *
+ * @param modifier Modifier.
+ */
 @Composable
-fun AppHeader( //Header for the App
+fun AppHeader(
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -89,9 +100,15 @@ fun AppHeader( //Header for the App
     }
 }
 
+/**
+ * View of the list of seasons.
+ *
+ * @param seasons List of seasons.
+ * @param navController NavController for handling navigation.
+ * @param startScreenViewModel The ViewModel providing data for the StartScreen.
+ */
 @Composable
 fun SeasonsView(
-    //Final view of the list
     seasons: List<Int>,
     navController: NavController,
     startScreenViewModel: StartScreenViewModel
@@ -104,9 +121,16 @@ fun SeasonsView(
     )
 }
 
+/**
+ * Representing the list of seasons from the API call.
+ *
+ * @param modifier Modifier.
+ * @param seasons List of seasons.
+ * @param navController NavController for handling navigation.
+ * @param startScreenViewModel The ViewModel providing data for the StartScreen.
+ */
 @Composable
 fun SeasonsList(
-    //Shows the seasons from the API call from the startviewmodel
     modifier: Modifier = Modifier,
     seasons: List<Int>,
     navController: NavController,
@@ -136,8 +160,11 @@ fun SeasonsList(
     }
 }
 
+/**
+ * Infobox that displays advice to choose a season.
+ */
 @Composable
-fun Infobox() { //Shows the advice to choose a season
+fun Infobox() {
     Box(
         modifier = Modifier
             .background(Color(240, 241, 242))

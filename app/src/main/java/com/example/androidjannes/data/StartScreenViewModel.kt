@@ -16,18 +16,26 @@ import com.example.androidjannes.room.SeasonsDatabase
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-sealed interface NbaSeasonsState { //The different states
+/**
+ * Sealed interface representing the different states.
+ */
+sealed interface NbaSeasonsState {
     data class Success(val seasons: List<Int>) : NbaSeasonsState
     object Loading : NbaSeasonsState
     object Error : NbaSeasonsState
 }
 
+/**
+ * ViewModel for the start screen, responsible for managing NBA seasons data.
+ *
+ * @param application The Android application context.
+ */
 class StartScreenViewModel(application: Application) : AndroidViewModel(application) {
 
     var seasons: NbaSeasonsState by mutableStateOf(NbaSeasonsState.Loading) //List of seasons
         private set
 
-    var seasonsRepository: SeasonsRepository
+    var seasonsRepository: SeasonsRepository //Repository for the Room Database
 
     init {
 
@@ -52,6 +60,9 @@ class StartScreenViewModel(application: Application) : AndroidViewModel(applicat
 
     }
 
+    /**
+     * Makes an API call to retrieve NBA seasons and updates the local database.
+     */
     private fun getSeasons() {
         viewModelScope.launch {
             seasons = try { //If the API is available "seasons" & the room database gets updated
@@ -67,11 +78,17 @@ class StartScreenViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun onItemClick( //When a season is clicked, the navController navigates to the infoscreen & adds the season-parameter
+    /**
+     * Handles the click event when a season is selected.
+     * Navigates to the InfoScreen and adds the selected season as a parameter.
+     *
+     * @param navController The NavController for navigating to the infoscreen with the correct parameter
+     * @param season The selected NBA season.
+     */
+    fun onItemClick(
         navController: NavController,
         season: Int
     ) {
         navController.navigate("${Screen.Info.route}/$season") //Adds the selected season
     }
-
 }

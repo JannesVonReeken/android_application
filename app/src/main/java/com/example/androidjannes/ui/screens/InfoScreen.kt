@@ -42,6 +42,13 @@ import com.example.androidjannes.R
 import com.example.androidjannes.navigation.Screen
 import com.example.androidjannes.network.StandingData
 
+/**
+ * InfoScreen of the app.
+ *
+ * @param navController The NavController for handling navigation.
+ * @param infoScreenViewModel The ViewModel providing data for the InfoScreen.
+ * @param selectedSeason The selected NBA season.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
@@ -89,6 +96,13 @@ fun InfoScreen(
     )
 }
 
+/**
+ * Shows standings based on screen orientation.
+ *
+ * @param infoScreenViewModel The ViewModel providing data for the InfoScreen.
+ * @param modifier Modifier.
+ * @param standings List of standing.
+ */
 @Composable
 fun Standings(
     infoScreenViewModel: InfoScreenViewModel,
@@ -132,8 +146,16 @@ fun Standings(
     }
 }
 
+/**
+ * Standings in portrait mode.
+ *
+ * @param modifier Modifier.
+ * @param infoScreenViewModel ViewModel providing data to show.
+ * @param eastConference List of standing data for NBA Eastern Conference.
+ * @param westConference List of standing data for NBA Western Conference.
+ */
 @Composable
-fun PortraitStandings( //Final view for the portrait mode
+fun PortraitStandings(
     modifier: Modifier = Modifier,
     infoScreenViewModel: InfoScreenViewModel,
     eastConference: List<StandingData>,
@@ -157,9 +179,16 @@ fun PortraitStandings( //Final view for the portrait mode
     }
 }
 
+/**
+ * Representing the standings in landscape mode.
+ *
+ * @param modifier Modifier.
+ * @param eastConference List of standing data for NBA Eastern Conference.
+ * @param westConference List of standing data for NBA Western Conference.
+ * @param infoScreenViewModel ViewModel providing data to show.
+ */
 @Composable
 fun StandingsLandscape(
-    //Final view for the landscape mode
     modifier: Modifier,
     eastConference: List<StandingData>,
     westConference: List<StandingData>,
@@ -183,8 +212,17 @@ fun StandingsLandscape(
     }
 }
 
+/**
+ * Combination of the conference Name & the conference list
+ *
+ * @param modifier Modifier.
+ * @param conference List of standing data for a specific conference.
+ * @param infoScreenViewModel ViewModel providing data to show.
+ * @param conferenceName Name of the conference.
+ * @param scrollState LazyListState for handling scroll state.
+ */
 @Composable
-fun StandingsColumnLandscape( //Combination of the conference Name & the conference list
+fun StandingsColumnLandscape(
     modifier: Modifier,
     conference: List<StandingData>,
     infoScreenViewModel: InfoScreenViewModel,
@@ -206,8 +244,13 @@ fun StandingsColumnLandscape( //Combination of the conference Name & the confere
     }
 }
 
+/**
+ * The header for each conference - text is centered
+ *
+ * @param conference Name of the conference.
+ */
 @Composable
-fun ConferenceHeader( //The header for each conference - text is centered
+fun ConferenceHeader(
     conference: String
 ) {
     Spacer(modifier = Modifier.padding(8.dp))
@@ -223,8 +266,16 @@ fun ConferenceHeader( //The header for each conference - text is centered
     Spacer(modifier = Modifier.padding(8.dp))
 }
 
+/**
+ * Ordering and creating a list for the chosen conference.
+ *
+ * @param modifier Modifier.
+ * @param infoScreenViewModel ViewModel providing data to show.
+ * @param conferenceList List of standing data for a specific conference.
+ * @param scrollState LazyListState for handling scroll state.
+ */
 @Composable
-fun TeamList( //Creates & orders the list for the choosen conference
+fun TeamList(
     modifier: Modifier,
     infoScreenViewModel: InfoScreenViewModel,
     conferenceList: List<StandingData>,
@@ -244,8 +295,14 @@ fun TeamList( //Creates & orders the list for the choosen conference
     }
 }
 
+/**
+ * Creating TeamCards with names, ranks, scores, and logos.
+ *
+ * @param nbaTeam StandingData representing an NBA team.
+ * @param infoScreenViewModel ViewModel providing data to show.
+ */
 @Composable
-fun TeamCard( //Creates the Teamcards with the names,ranks,scores and logos
+fun TeamCard(
     nbaTeam: StandingData,
     infoScreenViewModel: InfoScreenViewModel
 ) {
@@ -293,8 +350,12 @@ fun TeamCard( //Creates the Teamcards with the names,ranks,scores and logos
     }
 }
 
+
+/**
+ * Displaying a loading message.
+ */
 @Composable
-fun OnLoading() { //If its loading
+fun OnLoading() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -304,8 +365,12 @@ fun OnLoading() { //If its loading
     }
 }
 
+
+/**
+ * Displaying an error message.
+ */
 @Composable
-fun OnError() { //If something went wrong
+fun OnError() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -315,8 +380,11 @@ fun OnError() { //If something went wrong
     }
 }
 
+/**
+ * Displaying an "No data available" message ff no data are available for this season.
+ */
 @Composable
-fun NoDataAvailable() { //If no datas are available for this season
+fun NoDataAvailable() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -326,8 +394,15 @@ fun NoDataAvailable() { //If no datas are available for this season
     }
 }
 
+/**
+ * NavigationBar for navigating back to the seasons list.
+ *
+ * @param modifier Modifier.
+ * @param navController NavController for handling navigation.
+ * @param infoScreenViewModel The ViewModel providing data for the InfoScreen.
+ */
 @Composable
-fun NavigationBar( //Navigationbar to navigate back to the seasons list
+fun NavigationBar(
     modifier: Modifier = Modifier,
     navController: NavController,
     infoScreenViewModel: InfoScreenViewModel
