@@ -73,7 +73,7 @@ class StartScreenViewModel(application: Application) : AndroidViewModel(applicat
             } catch (e: IOException) { //If the API isn't available the seasons list remains untouched
                 seasons
             } catch (e: Exception){
-                NbaSeasonsState.Error
+                seasons
             }
         }
     }
